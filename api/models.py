@@ -2,7 +2,7 @@ from django.db import models
 from cloudinary.models import CloudinaryField
 
 from django.db.models.signals import post_save
-from django.dispatch import receiver
+#from django.dispatch import receiver
 
 from django.core.validators import MinValueValidator
 
@@ -37,13 +37,13 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name
 
-@receiver(post_save,sender=Product)
+""" @receiver(post_save,sender=Product)
 def generate_sku(sender,instance,created,**kwargs):
     if created:
         category_code = instance.category.name[:2].upper()
         correlative = str(Product.objects.count()).zfill(3)
         instance.sku = f'{category_code}{correlative}'
-        instance.save()
+        instance.save() """
 ######## MODELS FOR USER AND CLIENT #########
 from django.contrib.auth.models import User
 
