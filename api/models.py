@@ -18,6 +18,7 @@ class Product(models.Model):
     image = CloudinaryField('image', default='')
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    average_rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)  # Campo para el promedio de ratings
 
     def __str__(self):
         return self.name
@@ -34,6 +35,11 @@ class Review(models.Model):
 
     class Meta:
         db_table = 'tbl_review'  # Cambiado el nombre de la tabla
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        self.product.average_rating = self.product.reviews.aggregate(models.Avg('rating'))['rating__avg'] or 0.00
+        self.product.save()
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -80,6 +86,7 @@ class Order(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     is_delivered = models.BooleanField(default=False)
     delivered_at = models.DateTimeField(null=True, blank=True)
+    is_paid = models.BooleanField(default=False)  # Nuevo campo para indicar si la orden ha sido pagada
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -102,3 +109,4 @@ class ShippingAddress(models.Model):
 
     def __str__(self):
         return f"Shipping Address for Order {self.order_id}"
+
