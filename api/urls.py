@@ -1,24 +1,33 @@
 from django.urls import path
-
 from . import views
 
 urlpatterns = [
-    path('client', views.ClientView.as_view()),
-    path('category',views.CategoryView.as_view()),
-    path('product',views.ProductView.as_view()),
-    path('category/<int:category_id>/products',views.CategoryProductView.as_view()),
-    path('product/search',views.SearchProductView.as_view()),
-    path('product/img/upload',views.UploadProductImgView.as_view()),
-    path('order',views.OrderRegisterView.as_view()),
-    
-    path('cart/', views.cart, name='cart'),
-    path('cart/add/<int:product_id>/', views.add_to_cart, name='add_to_cart'),
-    path('cart/remove/<int:product_id>/', views.remove_from_cart, name='remove_from_cart'),
-    path('cart/clear/', views.clear_cart, name='clear_cart'),
-    
-    path('client/register', views.register_client),
-    path('client/login', views.login_client),
-    path('client/logout', views.logout_client),
-    path('client/update', views.update_client),
-    path('client/thanks', views.thanks),
+    # URLs para Categorías
+    path('categories/', views.CategoryListView.as_view(), name='category-list'),
+    path('categories/<int:pk>/', views.CategoryDetailView.as_view(), name='category-detail'),
+
+    # URLs para Productos
+    path('products/', views.ProductListView.as_view(), name='product-list'),
+    path('products/<int:pk>/', views.ProductDetailView.as_view(), name='product-detail'),
+    path('products/search/', views.search_product, name='product-search'),
+
+    # URLs para Órdenes
+    path('orders/', views.OrderListView.as_view(), name='order-list'),
+    path('orders/<int:pk>/', views.OrderDetailView.as_view(), name='order-detail'),
+    path('orders/create/', views.create_order, name='order-create'),
+
+    # URLs para Reseñas
+    path('products/<int:pk>/reviews/', views.create_review, name='review-create'),
+
+    # URLs para Usuarios
+    path('users/', views.UserListView.as_view(), name='user-list'),
+    path('users/<int:pk>/', views.UserDetailView.as_view(), name='user-detail'),
+    path('users/search/', views.search_user, name='user-search'),
+    path('users/profile/', views.current_user_profile, name='user-profile'),
+
+    # URL para Registro de Usuario
+    path('register/', views.register_user, name='register'),
+
+    # Otras URLs
+    # ...
 ]

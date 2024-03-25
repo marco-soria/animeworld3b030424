@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
+import os
 from decouple import config
 
 import cloudinary
@@ -39,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'cloudinary',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'paypal.standard.ipn',
     'corsheaders',
     'django.contrib.admin',
@@ -94,7 +96,7 @@ WSGI_APPLICATION = 'animeworld_backend.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "db_animeworld3",
+        "NAME": "animeworld3",
         "USER": "postgres",
         "PASSWORD": "root",
         "HOST": "127.0.0.1",
@@ -105,6 +107,8 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+AUTH_USER_MODEL = 'api.User'
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -158,3 +162,33 @@ cloudinary.config(
 CORS_ALLOW_ALL_ORIGINS = True
 
 PAYPAL_TEST = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=50),
+    'REFRESH_TOKEN_LIFETIME': timedelta(minutes=50),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'UPDATE_LAST_LOGIN': False,
+
+    'ALGORITHM': 'HS256',
+
+    'VERIFYING_KEY': SECRET_KEY,
+    'AUDIENCE': None,
+    'ISSUER': None,
+    'JWK_URL': None,
+    'LEEWAY': 0,
+
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+    'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
+
+    'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
+    'TOKEN_TYPE_CLAIM': 'token_type',
+    'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
+
+    'JTI_CLAIM': 'jti',
+}
