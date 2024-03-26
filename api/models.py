@@ -19,7 +19,8 @@ class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     average_rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.00)  # Campo para el promedio de ratings
-
+    is_favorite = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.name
 
@@ -68,6 +69,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=100)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_subscribed = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'
