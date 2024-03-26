@@ -23,7 +23,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email', 'first_name', 'last_name', 'is_active', 'is_staff', 'date_joined']
+        fields = ['email', 'first_name', 'last_name', 'is_active', 'is_staff', 'is_subscribed', 'date_joined']
 
 # Serializer para OrderItem
 class OrderItemSerializer(serializers.ModelSerializer):

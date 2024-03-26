@@ -130,3 +130,19 @@ def register_user(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.contrib.auth import authenticate, login as django_login
+
+@api_view(['POST'])
+def login(request):
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    user = authenticate(request, email=email, password=password)
+    if user is not None:
+        django_login(request, user)
+        return Response({'detail': 'Login successful'}, status=status.HTTP_200_OK)
+    else:
+        return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
