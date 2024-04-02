@@ -5,6 +5,7 @@ urlpatterns = [
     # URLs para Categorías
     path('categories/', views.CategoryListView.as_view(), name='category-list'),
     path('categories/<int:pk>/', views.CategoryDetailView.as_view(), name='category-detail'),
+    path('categories/<str:category_name>/products/', views.CategoryProductListView.as_view(), name='category-product-list'),
 
     # URLs para Productos
     path('products/', views.ProductListView.as_view(), name='product-list'),

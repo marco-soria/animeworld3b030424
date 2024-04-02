@@ -3,7 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User, Category, Product, Review, Order, OrderItem, ShippingAddress
 from .serializers import (CategorySerializer, ProductSerializer, ReviewSerializer,
-                          OrderSerializer, ShippingAddressSerializer, UserSerializer)
+                          OrderSerializer, ShippingAddressSerializer, UserSerializer, CategoryProductSerializer)
 
 
 # Vistas para Categorías
@@ -146,3 +146,16 @@ def login(request):
         return Response({'detail': 'Login successful'}, status=status.HTTP_200_OK)
     else:
         return Response({'error': 'Invalid email or password'}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+#view category product
+class CategoryProductListView(generics.ListAPIView):
+    serializer_class = CategoryProductSerializer
+
+    def get_queryset(self):
+        category_name = self.kwargs['category_name']
+        try:
+            category = Category.objects.get(name=category_name)
+            return [category]
+        except Category.DoesNotExist:
+            return []

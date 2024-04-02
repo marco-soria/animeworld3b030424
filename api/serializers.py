@@ -97,3 +97,11 @@ class RegisterSerializer(serializers.ModelSerializer):
     
 class PasswordResetSerializer(serializers.Serializer):
     email = serializers.EmailField()
+    
+#categoryproduct
+class CategoryProductSerializer(serializers.ModelSerializer):
+    products = ProductSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'products']
