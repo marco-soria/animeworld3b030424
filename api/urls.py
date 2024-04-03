@@ -29,7 +29,7 @@ urlpatterns = [
     # URL para Registro de Usuario
     path('register/', views.register_user, name='register'),
     
-    path('login/', views.login, name='login')
+    #path('login/', views.login, name='login')
 
     # Otras URLs
     # ...
